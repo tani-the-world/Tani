@@ -96,31 +96,32 @@
             transform: translateY(0);
         }
 
+        /* テキストの設定：画像より手前に出す */
         .text-content {
             flex: 1;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9);
             position: relative;
-            z-index: 2;
+            z-index: 2; /* ここが重要：画像より上のレイヤーにする */
         }
 
-        /* ★変更点：背景画像の共通設定 */
+        /* ★背景画像の共通設定（文の真後ろに配置） */
         .section-bg-image {
             position: absolute;
-            top: 60%; /* 文字の下の方に配置 */
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 550px;
+            width: 95%;
+            max-width: 650px;
             opacity: 0;
-            z-index: 1;
+            z-index: 1; /* 文字(z-index: 2)の後ろ */
             pointer-events: none;
             object-fit: contain;
             transition: opacity 1.5s ease-out 0.3s, transform 1.5s ease-out 0.3s;
         }
 
-        /* 表示された時に少し透かして出す */
+        /* セクションが表示された時に「透かし」として出す */
         .container.show .section-bg-image {
-            opacity: 0.25; 
+            opacity: 0.25; /* 文字が読みやすいように25%くらいの薄さに設定 */
         }
 
         .photo-wrapper {
@@ -130,6 +131,7 @@
             opacity: 0;
             transform: scale(0.9);
             transition: all 1.0s ease-out 0.5s;
+            z-index: 3; /* 写真は一番手前 */
         }
 
         .container.show .photo-wrapper {
@@ -203,6 +205,7 @@
             box-shadow: 0 20px 40px rgba(255, 0, 123, 0.6);
             border: 2px solid rgb(249, 4, 122);
             background-color: rgba(0, 0, 0, 0.3);
+            z-index: 3;
         }
 
         .video-wrapper video {
@@ -226,11 +229,9 @@
             .text-content { text-align: center !important; }
             section:nth-child(even) .text-content { text-align: center !important; }
             
-            /* スマホでアルパカがズレるのを防ぐおまじない */
             .section-bg-image {
-                left: 50% !important;
-                transform: translate(-50%, -50%) !important;
                 width: 100%;
+                top: 50%;
             }
         }
     </style>
@@ -247,7 +248,7 @@
 
     <section>
         <div class="container full-width">
-            <img src="alpaca.png" alt="" class="section-bg-image">
+            <img src="alpaca.png" alt="自己紹介アルパカ" class="section-bg-image">
             <div class="text-content">
                 <h2>自己紹介</h2>
                 <p>初めまして！ ひろいつ/Hiroitsu です‼️ 17歳です！<br>
@@ -259,7 +260,7 @@
 
     <section>
         <div class="container">
-            <img src="alpacaeating.png" alt="" class="section-bg-image">
+            <img src="alpacaeating.png" alt="食べるアルパカ" class="section-bg-image">
             <div class="text-content">
                 <h2>FOOD</h2>
                 <p>🦐こういうエビとか生き物を感じてしまう系以外全部好きです。</p>
@@ -272,7 +273,7 @@
 
     <section>
         <div class="container">
-            <img src="alpacadrinking.png" alt="" class="section-bg-image">
+            <img src="alpacadrinking.png" alt="飲むアルパカ" class="section-bg-image">
             <div class="text-content">
                 <h2>DRINK</h2>
                 <p>フルーツ系のジュースが好きです。普段はジャスミン茶をよく飲みます。<br>
@@ -286,7 +287,7 @@
 
     <section>
         <div class="container">
-            <img src="alpacabsk.png" alt="" class="section-bg-image">
+            <img src="alpacabsk.png" alt="バスケアルパカ" class="section-bg-image">
             <div class="text-content">
                 <h2>HOBBY</h2>
                 <p>趣味は食べることです。美味しいものを探求するのが日課です。<br>
@@ -300,7 +301,7 @@
 
     <section>
         <div class="container">
-            <img src="alpaca.png" alt="" class="section-bg-image">
+            <img src="alpaca.png" alt="理想アルパカ" class="section-bg-image">
             <div class="text-content">
                 <h2>MY IDEAL PARTNER</h2>
                 <p>果物みたいな人が好きです。<br>
@@ -319,7 +320,7 @@
                 <h2>FINALLY</h2>
                 <p>怒られると耳が痛くなって少し鬱になりがちです。<br>
                 結構嫌なこととかがあったらずっと抱え込んででしまいます。<br>
-                僕を褒めてください。でも褒められてやる気になる時もあれば、少し油断してしまう自分がいます。<br>
+                僕を褒めてください。でも褒められてやるやる時もあれば、少し油断してしまう自分がいます。<br>
                 前向きになれる注意の仕方をしていただければ次に切り替えられます。よろしくお願いします。🙇</p>
             </div>
         </div>
