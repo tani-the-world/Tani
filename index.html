@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hiroitsu | Journey</title>
     <style>
-        /* 1. 全体設定 */
+        /* 全体設定 */
         body {
             margin: 0;
             padding: 0;
@@ -88,6 +88,7 @@
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+            position: relative; /* 子要素の基準にする */
         }
 
         .container.show {
@@ -99,7 +100,26 @@
             flex: 1;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
             position: relative;
-            z-index: 2;
+            z-index: 2; /* 文字を画像より上に */
+        }
+
+        /* ★ここが修正ポイント：アルパカの設定 */
+        .profile-bg-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            opacity: 0;
+            z-index: 1; /* 背景(-1)より上で、文字(2)より下 */
+            pointer-events: none;
+            object-fit: contain;
+            transition: opacity 1.5s ease-out 0.3s;
+        }
+
+        .container.show .profile-bg-image {
+            opacity: 0.4; /* 少し見えやすくしました */
         }
 
         .photo-wrapper {
@@ -116,7 +136,6 @@
             transform: scale(1);
         }
 
-        /* 偶数セクションの反転設定 */
         section:nth-child(even) .container {
             flex-direction: row-reverse;
         }
@@ -124,7 +143,6 @@
             text-align: right;
         }
 
-        /* 写真フレーム */
         .photo-frame {
             width: 100%;
             max-width: 450px;
@@ -164,7 +182,6 @@
             font-weight: 500;
         }
 
-        /* フル幅・中央寄せ用クラス */
         .full-width {
             flex-direction: column !important;
             text-align: center !important;
@@ -175,7 +192,6 @@
             transform: translateX(-50%);
         }
 
-        /* ビデオ */
         .video-wrapper {
             width: 100%;
             max-width: 800px;
@@ -194,26 +210,6 @@
             object-fit: contain;
         }
 
-        /* 透かし画像（アルパカ） */
-        .profile-bg-image {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 500px;
-            opacity: 0;
-            z-index: -1;
-            pointer-events: none;
-            object-fit: contain;
-            transition: opacity 1.2s ease-out 0.3s;
-        }
-
-        .container.show .profile-bg-image {
-            opacity: 0.3;
-        }
-
-        /* レスポンシブ (スマホ) */
         @media (max-width: 768px) {
             .header-fixed { font-size: 1.1rem; }
             .container {
