@@ -90,14 +90,15 @@
             transition: opacity 1.2s ease-out, transform 1.2s ease-out;
         }
 
-        /* テキスト専用のふわっとアニメーション */
+       /* テキスト専用のふわっとアニメーション */
         .text-content {
             flex: 1;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
             opacity: 0;
             transform: translateY(20px);
             transition: all 1.2s ease-out 0.3s;
-            /* 0.3秒遅れて開始 */
+            position: relative; 
+            z-index: 2;         
         }
 
         .photo-wrapper {
