@@ -1,346 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hiroitsu | Journey</title>
-    <style>
-        /* 全体設定 */
-        body {
-            margin: 0;
-            padding: 0;
-            color: white;
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
-            background-color: #333;
-            overflow-x: hidden;
-        }
-
-        /* 固定ヘッダー */
-        .header-fixed {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 10px 0;
-            min-height: 50px;
-            background-color: rgb(189, 1, 251);
-            color: black;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
-            text-align: center;
-        }
-
-        /* 背景設定 */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: linear-gradient(rgba(255, 0, 191, 0.7), rgba(0, 136, 255, 0.7)),
-                        url('gym_background.jpg') center/cover no-repeat;
-        }
-
-        .gradient-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(-45deg, rgba(255, 255, 255, 0.1), rgba(0, 255, 255, 0.2), rgba(255, 0, 0, 0.1));
-            background-size: 400% 400%;
-            animation: gradientAnim 10s ease infinite;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        @keyframes gradientAnim {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* レイアウト & アニメーション */
-        section {
-            min-height: 80vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 100px 5%;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 60px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-            position: relative;
-        }
-
-        .container.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* テキスト：画像より手前に出す */
-        .text-content {
-            flex: 1;
-            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9);
-            position: relative;
-            z-index: 2;
-        }
-
-        /* 背景アルパカ共通設定 */
-        .section-bg-image {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85%;
-            max-width: 550px;
-            opacity: 0;
-            z-index: 1;
-            pointer-events: none;
-            object-fit: contain;
-            transition: opacity 1.5s ease-out 0.3s;
-        }
-
-        .container.show .section-bg-image {
-            opacity: 0.25;
-        }
-
-        .photo-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            z-index: 3;
-        }
-
-        .photo-frame {
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 16 / 9;
-            border-radius: 15px;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 30px rgba(250, 3, 114, 0.6);
-        }
-
-        /* 動画用スタイル */
-        .video-wrapper {
-            width: 100%;
-            max-width: 800px;
-            margin-top: 30px;
-            aspect-ratio: 16 / 9;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(255, 0, 123, 0.6);
-            border: 2px solid rgb(249, 4, 122);
-            background-color: rgba(0, 0, 0, 0.3);
-            z-index: 3;
-        }
-
-        .video-wrapper video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #00ffff;
-            text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: #00ffff;
-        }
-
-        p {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            font-weight: 500;
-        }
-
-        /* 左右反転 */
-        section:nth-child(even) .container {
-            flex-direction: row-reverse;
-        }
-        section:nth-child(even) .text-content {
-            text-align: right;
-        }
-        section:nth-child(even) h2::after {
-            left: auto;
-            right: 0;
-        }
-
-        /* 中央寄せ設定 */
-        .full-width {
-            flex-direction: column !important;
-            text-align: center !important;
-        }
-        .full-width h2::after {
-            left: 50% !important;
-            transform: translateX(-50%);
-        }
-
-        /* スマホ対応 */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column !important;
-                text-align: center !important;
-                gap: 30px;
-                min-height: 350px;
-                justify-content: center;
-            }
-            h2 { font-size: 2.2rem; }
-            p { font-size: 1.1rem; }
-            .section-bg-image {
-                width: 100%;
-                top: 50% !important;
-                left: 50% !important;
-                transform: translate(-50%, -50%) !important;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="header-fixed">
-        <div>TANI THE WORLD ひろいつ / Hiroitsu</div>
-        <div style="font-size: 0.8rem;">Instagram: hiro___2o_8</div>
-    </div>
-
-    <div class="background-container"></div>
-    <div class="gradient-overlay"></div>
-
-    <section>
-        <div class="container full-width">
-            <img src="alpaca.png" alt="" class="section-bg-image">
-            <div class="text-content">
-                <h2>自己紹介</h2>
-                <p>初めまして！ ひろいつ/Hiroitsu です‼️ 17歳です！<br>
-                最近プログラミングにハマっております。<br>
-                このサイトに僕が作ったもののリンクを貼って参りたいと思っています。😁</p>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-            <img src="alpacaeating.png" alt="" class="section-bg-image">
-            <div class="text-content">
-                <h2>FOOD</h2>
-                <p>🦐こういうエビとか生き物を感じてしまう系以外全部好きです。</p>
-            </div>
-            <div class="photo-wrapper">
-                <img src="food.jpg" alt="食べ物" class="photo-frame">
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-            <img src="alpacadrinking.png" alt="" class="section-bg-image">
-            <div class="text-content">
-                <h2>DRINK</h2>
-                <p>フルーツ系のジュースが好きです。普段はジャスミン茶をよく飲みます。<br>
-                理由は独特な味にハマったのと、カタカナでかっこいいからです。</p>
-            </div>
-            <div class="photo-wrapper">
-                <img src="drink.jpg" alt="飲み物" class="photo-frame">
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-            <img src="alpacabsk.png" alt="" class="section-bg-image">
-            <div class="text-content">
-                <h2>HOBBY</h2>
-                <p>趣味は食べることです。美味しいものを探求するのが日課です。<br>
-                バスケットボールをすると嫌な事も忘れられます。</p>
-            </div>
-            <div class="photo-wrapper">
-                <img src="hobby.jpg" alt="趣味" class="photo-frame">
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-            <img src="alpacasukipi.png" alt="" class="section-bg-image">
-            <div class="text-content">
-                <h2>MY IDEAL PARTNER</h2>
-                <p>果物みたいな人が好きです。<br>
-                桃とか、いちごとか、りんごとかみかんとか、<br>
-                自分の好きな果物みたいな人です。</p>
-            </div>
-            <div class="photo-wrapper">
-                <img src="people.jpg" alt="好きなタイプ" class="photo-frame">
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container full-width">
-            <div class="text-content">
-                <h2>FINALLY</h2>
-                <p>怒られると耳が痛くなって少し鬱になりがちです。<br>
-                嫌なこととかがあったらずっと抱え込んでしまいます。<br>
-                僕を褒めてください。でも褒められてやる気になる時もあれば、少し油断してしまう自分がいます。<br>
-                前向きになれる注意の仕方をしていただければ次に切り替えられます。よろしくお願いします。🙇</p>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container full-width">
-            <div class="text-content">
-                <h2>BASKETBALL</h2>
-                <p>The Most Memorable Game</p>
-            </div>
-            <div class="video-wrapper">
-                <video src="douga.mov" controls preload="metadata"></video>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                } else {
-                    entry.target.classList.remove('show');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.container').forEach(c => observer.observe(c));
-    </script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taniの自己紹介</title>
+  </head>
+  <body>
+    <h1>自己紹介</h1>
+    <p>
+      はじめまして。Taniです。<br />
+      WEB作成を学びながら、このサイトもよりよくしていきます。<br />
+      TANI THE WORLD全開で人生楽しんでいこう。
+    </p>
+    <h2>趣味</h2>
+    <p>バスケ｜新しい曲探し｜友達と遊ぶこと</p>
+    <h1>僕のTABI THE WORLD</h1>
+    <p>
+      新たな経験を通して自分の見たことのない景色や、感じたことのない感情に出逢いに行く。
+    </p>
+    <h1>僕のInstagram account</h1>
+    <p>
+      ↓↓↓プログラミング勉強垢<br />
+      <a
+        href="https://www.instagram.com/tani_the_world?igsh=MXAya3BreGlydDV1Zw%3D%3D&utm_source=qr"
+        target="_blank"
+        rel="noopener"
+        >@tani_the_world</a
+      >
+      <br /><br />
+      ↓↓↓ 個人ブログ垢<br />
+      <a
+        href="https://www.instagram.com/hiro___2o_8?igsh=bGIzYzg2dndjcDRl&utm_source=qr"
+        target="_blank"
+        rel="noopener"
+        >@hiro___2o_8</a
+      >
+    </p>
+  </body>
 </html>
